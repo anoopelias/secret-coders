@@ -37,15 +37,19 @@ function parse(program, space) {
         const n = parseInt(splits[1]);
         switch (splits[0]) {
             case "FORWARD":
+            case "forward":
                 commands.push(space.forward.bind(space, n));
                 break;
-            case "BACKWARD":
+            case "BACK":
+            case "back":
                 commands.push(space.backward.bind(space, n));
                 break;
             case "LEFT":
+            case "left":
                 commands.push(space.left.bind(space, n));
                 break;
             case "RIGHT":
+            case "right":
                 commands.push(space.right.bind(space, n));
                 break;
         }
