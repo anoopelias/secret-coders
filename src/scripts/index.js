@@ -54,6 +54,10 @@ function parse(program, space) {
     return commands;
 }
 
+function rad(angle) {
+    return (angle / 180) * Math.PI;
+}
+
 async function getImage(name) {
     return $.get('images/' + name, () => { }, 'text');
 }
@@ -63,6 +67,7 @@ class Space {
     arrow;
     x;
     y;
+    relx;
     angle;
 
     constructor(id) {
@@ -71,6 +76,7 @@ class Space {
         this.x = 0;
         this.y = 0;
         this.angle = 0;
+        this.relx = 0;
     }
 
     async init() {
@@ -79,27 +85,30 @@ class Space {
         this.arrow = this.draw.findOne("#arrow-right");
     }
 
-    left(n) {
-        this.turn(-n);
+    backward(n) {
+        this.forward(-n);
     }
 
-    right(n) {
-        this.turn(n);
+    left(n) {
+        this.right(-n);
     }
 
     forward(n) {
-        this.x += Math.cos(this.angle) * n;
-        this.y += Math.sin(this.angle) * n;
-        console.log(this.x, this.y);
-        this.arrow.animate(2000, 0, 'after').move(this.x, this.y);
+        this.x += n * Math.cos(rad(this.angle));
+        this.y += n * Math.sin(rad(this.angle));
+        this.relx += n;
+        console.log("forward", n, this.x, this.y, this.angle);
+        this.arrow.animate(2000, 0, 'after').x(this.relx);
     }
 
-    turn(n) {
+    right(n) {
+        this.angle += n;
+        console.log("right", n, this.x, this.y, this.angle);
         this.arrow.animate(2000, 0, 'after').transform({
-            rotate: n,
-            origin: [this.x, this.y],
+            rotate: this.angle,
+            origin: [this.relx, 0],
+            position: [this.x, this.y],
         });
-        this.angle = (n / 180) * Math.PI;
     }
 
 }
