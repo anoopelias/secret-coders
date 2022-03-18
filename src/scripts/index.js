@@ -57,6 +57,16 @@ function parse(program, space) {
             case "Right":
                 commands.push(space.right.bind(space, n));
                 break;
+            case "PENDOWN":
+            case "pendown":
+            case "PenDown":
+                commands.push(space.setPenDown.bind(space));
+                break;
+            case "PENUP":
+            case "penup":
+            case "PenUp":
+                commands.push(space.setPenUp.bind(space));
+                break;
         }
     });
 
@@ -79,6 +89,7 @@ class Space {
     relx;
     angle;
     time;
+    penDown;
 
     constructor(id) {
         $('#' + id).empty();
@@ -88,6 +99,7 @@ class Space {
         this.angle = 0;
         this.relx = 0;
         this.time = 0;
+        this.penDown = true;
     }
 
     async init() {
@@ -95,6 +107,14 @@ class Space {
         this.draw.svg(await getImage('arrow-right.svg'));
         this.arrow = this.draw.findOne("#arrow-right");
         this.arrow.timeline(this.draw.timeline());
+    }
+
+    setPenDown() {
+        this.penDown = true;
+    }
+
+    setPenUp() {
+        this.penDown = false;
     }
 
     adjustArrow([x, y]) {
@@ -121,11 +141,15 @@ class Space {
         this.arrow.animate(ANIMATION_TIME, this.time, 'relative')
             .x(this.relx);
 
-        const line = this.draw.line(startX, startY, startX, startY)
-            .stroke({ color: '#f06', width: 1, linecap: 'round' });
-        line.timeline(this.draw.timeline());
-        line.animate(ANIMATION_TIME, this.time, 'relative')
-            .plot(startX, startY, endX, endY);
+
+        if (this.penDown) {
+            const line = this.draw.line(startX, startY, startX, startY)
+                .stroke({ color: '#f06', width: 1, linecap: 'round' });
+            line.timeline(this.draw.timeline());
+            line.animate(ANIMATION_TIME, this.time, 'relative')
+                .plot(startX, startY, endX, endY);
+
+        }
 
         this.time += ANIMATION_TIME;
     }
