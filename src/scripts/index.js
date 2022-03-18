@@ -11,8 +11,6 @@ const ARROW_SIDE = 16;
 
 async function renderSpace() {
     let space = new Space(SPACE_ID);
-    await space.init();
-
     connect(space);
 }
 
@@ -23,7 +21,6 @@ function connect(space) {
 async function run() {
     const program = $('#program').val();
     const space = new Space(SPACE_ID);
-    await space.init();
 
     const commands = parse(program, space);
     for (let command of commands) {
@@ -100,13 +97,20 @@ class Space {
         this.relx = 0;
         this.time = 0;
         this.penDown = false;
+
+        this.draw.rect('100%', '100%').attr({ fill: '#ebfaef' });
+        this.arrow = this.drawArrow();
     }
 
-    async init() {
-        this.draw.rect('100%', '100%').attr({ fill: '#ebfaef' });
-        this.draw.svg(await getImage('arrow-right.svg'));
-        this.arrow = this.draw.findOne("#arrow-right");
-        this.arrow.timeline(this.draw.timeline());
+    drawArrow() {
+        const group = this.draw.group();
+        group.line(2, 8, 16.5, 8)
+            .stroke({ color: '#00731f', width: 1 });
+        group.line(11, 2, 16.5, 8)
+            .stroke({ color: '#00731f', width: 1 });
+        group.line(11, 14, 16.5, 8)
+            .stroke({ color: '#00731f', width: 1 });
+        return group;
     }
 
     setPenDown() {
