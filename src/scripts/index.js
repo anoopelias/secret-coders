@@ -148,10 +148,12 @@ class Space {
 
         if (this.penDown) {
             const line = this.draw.line(startX, startY, startX, startY)
-                .stroke({ color: '#f06', width: 1, linecap: 'round' });
+                .stroke({ color: '#ebfaef', width: 2, linecap: 'round' });
             line.timeline(this.draw.timeline());
             line.animate(ANIMATION_TIME, this.time, 'relative')
-                .plot(startX, startY, endX, endY);
+                .plot(startX, startY, endX, endY)
+                .animate(ANIMATION_TIME, this.time, 'relative')
+                .stroke({color: '#f06'});
 
         }
 
