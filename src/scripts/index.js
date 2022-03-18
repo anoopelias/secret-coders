@@ -91,10 +91,10 @@ class Space {
     constructor(id) {
         $('#' + id).empty();
         this.draw = SVG().addTo('#' + id).size('100%', '100%');
-        this.x = 0;
-        this.y = 0;
+        this.relx = 100;
+        this.x = this.relx * Math.cos(Math.PI / 4);
+        this.y = this.relx * Math.sin(Math.PI / 4);
         this.angle = 0;
-        this.relx = 0;
         this.time = 0;
         this.penDown = false;
 
@@ -110,6 +110,10 @@ class Space {
             .stroke({ color: '#00731f', width: 1 });
         group.line(11, 14, 16.5, 8)
             .stroke({ color: '#00731f', width: 1 });
+
+        group.transform({ angle: 45, position: this.adjustArrow([0, 0]) });
+        group.x(this.relx);
+        group.transform({ angle: -45, position: this.adjustArrow([this.x, this.y]) });
         return group;
     }
 
@@ -153,7 +157,7 @@ class Space {
             line.animate(ANIMATION_TIME, this.time, 'relative')
                 .plot(startX, startY, endX, endY)
                 .animate(ANIMATION_TIME, this.time, 'relative')
-                .stroke({color: '#f06'});
+                .stroke({ color: '#f06' });
 
         }
 
