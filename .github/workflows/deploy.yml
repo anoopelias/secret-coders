@@ -19,3 +19,4 @@ jobs:
     - name: Build
       run: |
         node -v
+        npm ci
