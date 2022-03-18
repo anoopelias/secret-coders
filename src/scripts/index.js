@@ -97,6 +97,10 @@ class Space {
         this.arrow.timeline(this.draw.timeline());
     }
 
+    adjustArrow([x, y]) {
+        return [x + ARROW_SIDE, y + (ARROW_SIDE / 2)];
+    }
+
     backward(n) {
         this.forward(-n);
     }
@@ -106,11 +110,23 @@ class Space {
     }
 
     forward(n) {
+        const [startX, startY] = this.adjustArrow([this.x, this.y]);
+
         this.x += n * Math.cos(rad(this.angle));
         this.y += n * Math.sin(rad(this.angle));
         this.relx += n;
+        const [endX, endY] = this.adjustArrow([this.x, this.y]);
+
         console.log("forward", n, this.x, this.y, this.angle, this.time);
-        this.arrow.animate(ANIMATION_TIME, this.time, 'relative').x(this.relx);
+        this.arrow.animate(ANIMATION_TIME, this.time, 'relative')
+            .x(this.relx);
+
+        const line = this.draw.line(startX, startY, startX, startY)
+            .stroke({ color: '#f06', width: 1, linecap: 'round' });
+        line.timeline(this.draw.timeline());
+        line.animate(ANIMATION_TIME, this.time, 'relative')
+            .plot(startX, startY, endX, endY);
+
         this.time += ANIMATION_TIME;
     }
 
@@ -119,8 +135,8 @@ class Space {
         console.log("right", n, this.x, this.y, this.angle, this.time);
         this.arrow.animate(ANIMATION_TIME, this.time, 'relative').transform({
             rotate: this.angle,
-            origin: [this.relx, 0],
-            position: [this.x, this.y],
+            origin: this.adjustArrow([this.relx, 0]),
+            position: this.adjustArrow([this.x, this.y]),
         });
         this.time += ANIMATION_TIME;
     }
