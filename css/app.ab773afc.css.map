@@ -1,0 +1,1 @@
+{"version":3,"file":"css/app.ab773afc.css","mappings":"AAEA,KACE,aAHoB,CAIpB,sBAAuB,CACxB,OAGC,YAAa","sources":["webpack://webpack-starter/./src/styles/index.scss"],"sourcesContent":["$body-color: slateblue;\n\nbody {\n  color: $body-color;\n  font-family: sans-serif;\n}\n\n#space {\n  height: 500px;\n}\n"],"names":[],"sourceRoot":""}
