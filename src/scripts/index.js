@@ -39,18 +39,22 @@ function parse(program, space) {
         switch (splits[0]) {
             case "FORWARD":
             case "forward":
+            case "Forward":
                 commands.push(space.forward.bind(space, n));
                 break;
             case "BACK":
             case "back":
+            case "Back":
                 commands.push(space.backward.bind(space, n));
                 break;
             case "LEFT":
             case "left":
+            case "Left":
                 commands.push(space.left.bind(space, n));
                 break;
             case "RIGHT":
             case "right":
+            case "Right":
                 commands.push(space.right.bind(space, n));
                 break;
         }
