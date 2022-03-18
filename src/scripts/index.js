@@ -99,7 +99,7 @@ class Space {
         this.angle = 0;
         this.relx = 0;
         this.time = 0;
-        this.penDown = true;
+        this.penDown = false;
     }
 
     async init() {
