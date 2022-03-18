@@ -6,6 +6,7 @@ import $ from 'jquery';
 import { SVG } from '@svgdotjs/svg.js';
 
 const SPACE_ID = "space";
+const ANIMATION_TIME = 2000;
 const ARROW_SIDE = 16;
 
 async function renderSpace() {
@@ -73,6 +74,7 @@ class Space {
     y;
     relx;
     angle;
+    time;
 
     constructor(id) {
         $('#' + id).empty();
@@ -81,12 +83,14 @@ class Space {
         this.y = 0;
         this.angle = 0;
         this.relx = 0;
+        this.time = 0;
     }
 
     async init() {
         this.draw.rect('100%', '100%').attr({ fill: '#ebfaef' });
         this.draw.svg(await getImage('arrow-right.svg'));
         this.arrow = this.draw.findOne("#arrow-right");
+        this.arrow.timeline(this.draw.timeline());
     }
 
     backward(n) {
@@ -101,18 +105,20 @@ class Space {
         this.x += n * Math.cos(rad(this.angle));
         this.y += n * Math.sin(rad(this.angle));
         this.relx += n;
-        console.log("forward", n, this.x, this.y, this.angle);
-        this.arrow.animate(2000, 0, 'after').x(this.relx);
+        console.log("forward", n, this.x, this.y, this.angle, this.time);
+        this.arrow.animate(ANIMATION_TIME, this.time, 'relative').x(this.relx);
+        this.time += ANIMATION_TIME;
     }
 
     right(n) {
         this.angle += n;
-        console.log("right", n, this.x, this.y, this.angle);
-        this.arrow.animate(2000, 0, 'after').transform({
+        console.log("right", n, this.x, this.y, this.angle, this.time);
+        this.arrow.animate(ANIMATION_TIME, this.time, 'relative').transform({
             rotate: this.angle,
             origin: [this.relx, 0],
             position: [this.x, this.y],
         });
+        this.time += ANIMATION_TIME;
     }
 
 }
