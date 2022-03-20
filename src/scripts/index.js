@@ -7,6 +7,7 @@ import { SVG } from '@svgdotjs/svg.js';
 
 const SPACE_ID = "space";
 const ANIMATION_TIME = 2000;
+const ANIMATION_TIME_FAST = 100;
 const ARROW_SIDE = 16;
 
 async function renderSpace() {
@@ -63,6 +64,16 @@ function parse(program, space) {
             case "penup":
             case "PenUp":
                 commands.push(space.setPenUp.bind(space));
+                break;
+            case "HIDE":
+            case "hide":
+            case "Hide":
+                commands.push(space.hide.bind(space));
+                break;
+            case "SHOW":
+            case "show":
+            case "Show":
+                commands.push(space.show.bind(space));
                 break;
         }
     });
@@ -173,6 +184,16 @@ class Space {
             position: this.adjustArrow([this.x, this.y]),
         });
         this.time += ANIMATION_TIME;
+    }
+
+    hide() {
+        this.arrow.animate(ANIMATION_TIME_FAST, this.time, 'relative').attr({ opacity: 0 });
+        this.time += ANIMATION_TIME_FAST;
+    }
+
+    show() {
+        this.arrow.animate(ANIMATION_TIME_FAST, this.time, 'relative').attr({ opacity : 100 });
+        this.time += ANIMATION_TIME_FAST;
     }
 
 }
