@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "A light foundation for your next frontend project based on webpack.",
   "scripts": {
+    "generate": "peggy -o src/scripts/parser.js --format es src/scripts/secret-coder.pegjs",
     "lint": "npm run lint:styles; npm run lint:scripts",
     "lint:styles": "stylelint src",
     "lint:scripts": "eslint src",
-    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
+    "build": "npm run generate && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
     "start": "webpack serve --config webpack/webpack.config.dev.js"
   },
   "repository": {
@@ -54,7 +55,8 @@
     "webpack": "^5.66.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.7.3",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^5.8.0",
+    "peggy": "^1.2.0"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",

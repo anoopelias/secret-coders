@@ -3,6 +3,7 @@
   "extends": [
     "eslint:recommended"
   ],
+  "ignorePatterns": ["src/scripts/parser.js"],
   "env": {
     "browser": true,
     "node": true

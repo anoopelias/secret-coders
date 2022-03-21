@@ -4,6 +4,7 @@ import '../styles/index.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import $ from 'jquery';
 import { SVG } from '@svgdotjs/svg.js';
+import * as parser from './parser';
 
 const SPACE_ID = "space";
 const ANIMATION_TIME = 2000;
@@ -12,21 +13,62 @@ const ARROW_SIDE = 16;
 
 async function renderSpace() {
     let space = new Space(SPACE_ID);
-    connect(space);
+    connect();
 }
 
-function connect(space) {
-    $("#run").click(run.bind(null, space));
+function connect() {
+    $("#run").click(run);
 }
 
-async function run() {
+function run() {
     const program = $('#program').val();
     const space = new Space(SPACE_ID);
 
-    const commands = parse(program, space);
-    for (let command of commands) {
-        command();
+    const programTree = parser.parse(program);
+    console.log(programTree);
+    execute(programTree, space);
+}
+
+function execute(programTree, space) {
+    for (let command of programTree) {
+        if (command.command === "repeat") {
+            for (let i = 0; i < command.number; i++) {
+                execute(command.subcommands, space);
+            }
+        } else {
+            executeCommand(command, space);
+        }
     }
+}
+
+function executeCommand(command, space) {
+    switch (command.command) {
+        case "forward":
+            space.forward(command.number);
+            break;
+        case "back":
+            space.backward(command.number);
+            break;
+        case "left":
+            space.left(command.number);
+            break;
+        case "right":
+            space.right(command.number);
+            break;
+        case "pendown":
+            space.setPenDown();
+            break;
+        case "penup":
+            space.setPenUp();
+            break;
+        case "hide":
+            space.hide();
+            break;
+        case "show":
+            space.show(space);
+            break;
+    }
+
 }
 
 function parse(program, space) {
@@ -83,10 +125,6 @@ function parse(program, space) {
 
 function rad(angle) {
     return (angle / 180) * Math.PI;
-}
-
-async function getImage(name) {
-    return $.get('images/' + name, () => { }, 'text');
 }
 
 class Space {
