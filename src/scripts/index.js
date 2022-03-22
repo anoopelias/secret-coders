@@ -13,7 +13,7 @@ const ANIMATION_TIME_FAST = 100;
 const ARROW_SIDE = 16;
 
 async function renderSpace() {
-    const program = localStorage.getItem('secret-coders-program');
+    const program = sessionStorage.getItem('secret-coders-program');
     setEditor(program);
     let space = new Space(SPACE_ID);
     connect();
@@ -25,7 +25,6 @@ function connect() {
 
 function run() {
     const program = window.editor.getValue();
-    localStorage.setItem('secret-coders-program', program);
     const space = new Space(SPACE_ID);
 
     const programTree = parser.parse(program);

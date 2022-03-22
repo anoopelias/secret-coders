@@ -37,6 +37,9 @@ function setEditor(program) {
             enabled: false
         }
     });
+    window.editor.getModel().onDidChangeContent(() => {
+        sessionStorage.setItem('secret-coders-program', window.editor.getValue());
+    });
 }
 
 export { setEditor };
