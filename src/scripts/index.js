@@ -74,58 +74,6 @@ function executeCommand(command, space) {
 
 }
 
-function parse(program, space) {
-    const commands = [];
-    program.split("\n").map(line => {
-        const splits = line.split(" ");
-        const n = parseInt(splits[1]);
-        switch (splits[0]) {
-            case "FORWARD":
-            case "forward":
-            case "Forward":
-                commands.push(space.forward.bind(space, n));
-                break;
-            case "BACK":
-            case "back":
-            case "Back":
-                commands.push(space.backward.bind(space, n));
-                break;
-            case "LEFT":
-            case "left":
-            case "Left":
-                commands.push(space.left.bind(space, n));
-                break;
-            case "RIGHT":
-            case "right":
-            case "Right":
-                commands.push(space.right.bind(space, n));
-                break;
-            case "PENDOWN":
-            case "pendown":
-            case "PenDown":
-                commands.push(space.setPenDown.bind(space));
-                break;
-            case "PENUP":
-            case "penup":
-            case "PenUp":
-                commands.push(space.setPenUp.bind(space));
-                break;
-            case "HIDE":
-            case "hide":
-            case "Hide":
-                commands.push(space.hide.bind(space));
-                break;
-            case "SHOW":
-            case "show":
-            case "Show":
-                commands.push(space.show.bind(space));
-                break;
-        }
-    });
-
-    return commands;
-}
-
 function rad(angle) {
     return (angle / 180) * Math.PI;
 }
