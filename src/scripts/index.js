@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import $ from 'jquery';
 import { SVG } from '@svgdotjs/svg.js';
 import * as parser from './parser';
+import * as monaco from 'monaco-editor';
 
 const SPACE_ID = "space";
 const ANIMATION_TIME = 2000;
@@ -12,8 +13,32 @@ const ANIMATION_TIME_FAST = 100;
 const ARROW_SIDE = 16;
 
 async function renderSpace() {
+    setEditor();
     let space = new Space(SPACE_ID);
     connect();
+}
+
+const keywords = ['forward', 'back', 'left', 'right', 'pendown',
+    'penup', 'hide', 'show', 'repeat'];
+
+monaco.languages.register({ id: 'secret-coders' });
+monaco.languages.setMonarchTokensProvider('secret-coders', {
+    ignoreCase: true,
+    tokenizer: {
+        root: [
+            [new RegExp(keywords.join("|")), 'keyword'],
+            [/\d+/, 'number'],
+        ]
+    }
+});
+
+function setEditor() {
+    window.editor = monaco.editor.create(document.getElementById('program'), {
+        language: 'secret-coders',
+        minimap: {
+            enabled: false
+        }
+    });
 }
 
 function connect() {
@@ -21,7 +46,8 @@ function connect() {
 }
 
 function run() {
-    const program = $('#program').val();
+    console.log(window.editor.getModel());
+    const program = window.editor.getValue();
     const space = new Space(SPACE_ID);
 
     const programTree = parser.parse(program);
@@ -230,7 +256,7 @@ class Space {
     }
 
     show() {
-        this.arrow.animate(ANIMATION_TIME_FAST, this.time, 'relative').attr({ opacity : 100 });
+        this.arrow.animate(ANIMATION_TIME_FAST, this.time, 'relative').attr({ opacity: 100 });
         this.time += ANIMATION_TIME_FAST;
     }
 
