@@ -29,9 +29,10 @@ monaco.languages.registerCompletionItemProvider('secret-coders', {
     }
 });
 
-function setEditor() {
+function setEditor(program) {
     window.editor = monaco.editor.create(document.getElementById('program'), {
         language: 'secret-coders',
+        value: program,
         minimap: {
             enabled: false
         }
