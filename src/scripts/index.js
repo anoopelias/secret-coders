@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import $ from 'jquery';
 import { SVG } from '@svgdotjs/svg.js';
 import * as parser from './parser';
-import * as monaco from 'monaco-editor';
+import { setEditor } from './editor';
 
 const SPACE_ID = "space";
 const ANIMATION_TIME = 2000;
@@ -16,29 +16,6 @@ async function renderSpace() {
     setEditor();
     let space = new Space(SPACE_ID);
     connect();
-}
-
-const keywords = ['forward', 'back', 'left', 'right', 'pendown',
-    'penup', 'hide', 'show', 'repeat'];
-
-monaco.languages.register({ id: 'secret-coders' });
-monaco.languages.setMonarchTokensProvider('secret-coders', {
-    ignoreCase: true,
-    tokenizer: {
-        root: [
-            [new RegExp(keywords.join("|")), 'keyword'],
-            [/\d+/, 'number'],
-        ]
-    }
-});
-
-function setEditor() {
-    window.editor = monaco.editor.create(document.getElementById('program'), {
-        language: 'secret-coders',
-        minimap: {
-            enabled: false
-        }
-    });
 }
 
 function connect() {
