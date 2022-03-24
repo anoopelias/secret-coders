@@ -29,7 +29,7 @@ monaco.languages.registerCompletionItemProvider('secret-coders', {
     }
 });
 
-function setEditor(program) {
+function setEditor(program, onChange) {
     window.editor = monaco.editor.create(document.getElementById('program'), {
         language: 'secret-coders',
         value: program,
@@ -38,7 +38,7 @@ function setEditor(program) {
         }
     });
     window.editor.getModel().onDidChangeContent(() => {
-        sessionStorage.setItem('secret-coders-program', window.editor.getValue());
+        onChange(window.editor.getValue());
     });
 }
 

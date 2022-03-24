@@ -14,9 +14,12 @@ const ANIMATION_TIME = 2000;
 const ANIMATION_TIME_FAST = 100;
 const ARROW_SIDE = 16;
 
-async function renderSpace() {
+function renderSpace() {
     const program = sessionStorage.getItem('secret-coders-program');
-    setEditor(program);
+    
+    setEditor(program, (newProgram) => {
+        sessionStorage.setItem('secret-coders-program', newProgram);
+    });
     let space = new Space(SPACE_ID);
     connect();
 }
@@ -30,14 +33,13 @@ function run() {
     const space = new Space(SPACE_ID);
 
     try {
-    const programTree = parser.parse(program);
-    console.log(programTree);
-    execute(programTree, space);
+        const programTree = parser.parse(program);
+        execute(programTree, space);
     } catch (e) {
         if (!(e instanceof parser.SyntaxError)) throw e;
         const location = e.location.end;
         Toastify({
-            text: `${e.toString()}, Line ${location.line}, Column: ${location.column}, `,
+            text: `${e.toString()}, Line ${location.line}, Column: ${location.column}`,
             duration: 6000,
             newWindow: true,
             close: true,
