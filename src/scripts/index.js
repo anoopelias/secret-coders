@@ -6,6 +6,8 @@ import $ from 'jquery';
 import { SVG } from '@svgdotjs/svg.js';
 import * as parser from './parser';
 import { setEditor } from './editor';
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 
 const SPACE_ID = "space";
 const ANIMATION_TIME = 2000;
@@ -27,9 +29,23 @@ function run() {
     const program = window.editor.getValue();
     const space = new Space(SPACE_ID);
 
+    try {
     const programTree = parser.parse(program);
     console.log(programTree);
     execute(programTree, space);
+    } catch (e) {
+        if (!(e instanceof parser.SyntaxError)) throw e;
+        const location = e.location.end;
+        Toastify({
+            text: `${e.toString()}, Line ${location.line}, Column: ${location.column}, `,
+            duration: 6000,
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+          }).showToast();
+    }
 }
 
 function execute(programTree, space) {
