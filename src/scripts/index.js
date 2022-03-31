@@ -10,7 +10,7 @@ import Toastify from 'toastify-js';
 import "toastify-js/src/toastify.css";
 
 const SPACE_ID = "space";
-const ANIMATION_TIME = 2000;
+const ANIMATION_TIME = 500;
 const ANIMATION_TIME_FAST = 100;
 const ARROW_SIDE = 16;
 
