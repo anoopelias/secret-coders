@@ -10,6 +10,12 @@ A programming language as mentioned in [Secret Coders](http://www.secret-coders.
 npm install
 ```
 
+To generate the parser,
+```sh
+npm run generate
+```
+
+
 ### Start Dev Server
 
 ```sh
